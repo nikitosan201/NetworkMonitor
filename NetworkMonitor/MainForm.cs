@@ -11,6 +11,7 @@ using MySql.Data.MySqlClient;
 using System.Net.NetworkInformation;
 using System.Timers;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace NetworkMonitor
 {
@@ -24,6 +25,7 @@ namespace NetworkMonitor
         {
             
             InitializeComponent();
+           
 
             statusCheckTimer = new System.Timers.Timer(60000); // Проверка каждую минуту 60000
            statusCheckTimer.Elapsed += StatusCheckTimer_Elapsed;
@@ -58,6 +60,7 @@ namespace NetworkMonitor
             // Заполнение тестовыми данными
             LoadDevices();
         }
+
         public void ChangeLogFrequency(int interval)
         {
             statusCheckTimer.Interval = interval;
@@ -187,7 +190,7 @@ namespace NetworkMonitor
                                 string ip = reader.GetString("ip_address");
                                 string name = reader.GetString("name");
 
-                                LogPingResults(deviceId, ip);
+                                LogPingResults(deviceId, ip, name);
                                 string pingStats = GetFullPingStatistics(ip);
                                 string status = pingStats.Contains("потеряно = 0") ? "online" : "offline";
                                 UpdateDeviceStatus(deviceId, status);
@@ -274,19 +277,50 @@ namespace NetworkMonitor
                 return $"Ошибка выполнения ping: {ex.Message}";
             }
         }
+        private (string status, string logLevel) AnalyzePingResult(string pingOutput)
+        {
+            // Регулярное выражение для извлечения статистики потерь
+            var lossMatch = Regex.Match(pingOutput, @"Пакетов:.*?потеряно = (\d+)");
+            var lossPercentMatch = Regex.Match(pingOutput, @"\((\d+)% потерь\)");
 
-        private void LogPingResults(int deviceId, string ip)
+            if (lossMatch.Success && lossPercentMatch.Success)
+            {
+                int lostPackets = int.Parse(lossMatch.Groups[1].Value);
+                int lossPercent = int.Parse(lossPercentMatch.Groups[1].Value);
+
+                if (lossPercent == 100)
+                {
+                    return ("offline", "error");
+                }
+                else if (lostPackets > 0)
+                {
+                    return ("online", "warning"); // Устройство доступно, но есть потери
+                }
+                else
+                {
+                    return ("online", "info");
+                }
+            }
+
+            // Если не удалось распарсить - считаем ошибкой
+            return ("offline", "error");
+        }
+
+        private void LogPingResults(int deviceId, string ip, string deviceName)
         {
             string pingStats = GetFullPingStatistics(ip);
-            string status = pingStats.Contains("потеряно = 0") ? "online" : "offline";
-            string logLevel = status == "online" ? "info" : "error";
+            var (status, logLevel) = AnalyzePingResult(pingStats);
 
             // Обновляем статус в базе
             UpdateDeviceStatus(deviceId, status);
 
-            // Записываем полную статистику в лог
-            LogMessage(deviceId, logLevel, pingStats);
+            // Добавляем имя устройства в сообщение
+            string logMessage = $"{deviceName} ({ip}):\n{pingStats}";
+
+            // Записываем в лог с соответствующим уровнем
+            LogMessage(deviceId, logLevel, logMessage);
         }
+
         private void LogMessage(int deviceId, string logLevel, string message)
         {
             string connectionString = "server=localhost;user=root;database=hard_mon;port=3306;password=1234";
