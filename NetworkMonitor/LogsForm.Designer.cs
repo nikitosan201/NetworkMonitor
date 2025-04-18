@@ -35,16 +35,16 @@ namespace NetworkMonitor
             this.startDatePicker = new System.Windows.Forms.DateTimePicker();
             this.endDatePicker = new System.Windows.Forms.DateTimePicker();
             this.logsGrid = new System.Windows.Forms.DataGridView();
+            this.created_at = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.device_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.log_level = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.message = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.exportButton = new System.Windows.Forms.Button();
             this.clearButton = new System.Windows.Forms.Button();
             this.applyFiltersButton = new System.Windows.Forms.Button();
             this.intervalTextBox = new System.Windows.Forms.TextBox();
             this.applyIntervalButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.created_at = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.device_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.log_level = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.message = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.logsGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -99,6 +99,30 @@ namespace NetworkMonitor
             this.logsGrid.Name = "logsGrid";
             this.logsGrid.Size = new System.Drawing.Size(1121, 336);
             this.logsGrid.TabIndex = 4;
+            // 
+            // created_at
+            // 
+            this.created_at.HeaderText = "Время";
+            this.created_at.Name = "created_at";
+            this.created_at.Width = 200;
+            // 
+            // device_name
+            // 
+            this.device_name.HeaderText = "Устройство";
+            this.device_name.Name = "device_name";
+            this.device_name.Width = 130;
+            // 
+            // log_level
+            // 
+            this.log_level.HeaderText = "Уровень лога";
+            this.log_level.Name = "log_level";
+            this.log_level.Width = 130;
+            // 
+            // message
+            // 
+            this.message.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.message.HeaderText = "Сообщение";
+            this.message.Name = "message";
             // 
             // exportButton
             // 
@@ -158,30 +182,6 @@ namespace NetworkMonitor
             this.label1.TabIndex = 10;
             this.label1.Text = "Интервал лога (мс)";
             // 
-            // created_at
-            // 
-            this.created_at.HeaderText = "Время";
-            this.created_at.Name = "created_at";
-            this.created_at.Width = 200;
-            // 
-            // device_name
-            // 
-            this.device_name.HeaderText = "Устройство";
-            this.device_name.Name = "device_name";
-            this.device_name.Width = 130;
-            // 
-            // log_level
-            // 
-            this.log_level.HeaderText = "Уровень лога";
-            this.log_level.Name = "log_level";
-            this.log_level.Width = 130;
-            // 
-            // message
-            // 
-            this.message.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.message.HeaderText = "Сообщение";
-            this.message.Name = "message";
-            // 
             // LogsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -199,7 +199,7 @@ namespace NetworkMonitor
             this.Controls.Add(this.logLevelComboBox);
             this.Controls.Add(this.deviceComboBox);
             this.Name = "LogsForm";
-            this.Text = "LogsForm";
+            this.Text = "Логи Устройств";
             ((System.ComponentModel.ISupportInitialize)(this.logsGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

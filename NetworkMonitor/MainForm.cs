@@ -315,10 +315,10 @@ namespace NetworkMonitor
             UpdateDeviceStatus(deviceId, status);
 
             // Добавляем имя устройства в сообщение
-            string logMessage = $"{deviceName} ({ip}):\n{pingStats}";
+            //string logMessage = $"{deviceName} ({ip}):\n{pingStats}";
 
             // Записываем в лог с соответствующим уровнем
-            LogMessage(deviceId, logLevel, logMessage);
+            LogMessage(deviceId, logLevel, pingStats);
         }
 
         private void LogMessage(int deviceId, string logLevel, string message)

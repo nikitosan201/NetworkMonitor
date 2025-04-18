@@ -108,7 +108,7 @@
             this.Controls.Add(this.ipTextBox);
             this.Controls.Add(this.nameTextBox);
             this.Name = "EditDeviceForm";
-            this.Text = "EditDeviceForm";
+            this.Text = "Редактирование Устройства";
             this.ResumeLayout(false);
             this.PerformLayout();
 

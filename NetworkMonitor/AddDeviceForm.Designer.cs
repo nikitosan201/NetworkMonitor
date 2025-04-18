@@ -108,7 +108,7 @@
             this.Controls.Add(this.ipTextBox);
             this.Controls.Add(this.nameTextBox);
             this.Name = "AddDeviceForm";
-            this.Text = "AddDeviceForm";
+            this.Text = "Добавление Устройства";
             this.ResumeLayout(false);
             this.PerformLayout();
 
